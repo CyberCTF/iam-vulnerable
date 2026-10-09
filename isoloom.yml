@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://www.isoloom.com/schema/v1.json
+# IAM Vulnerable by Bishop Fox (https://github.com/BishopFox/iam-vulnerable): more than 250 IAM
+# users, roles, groups and policies in your own AWS account that hold 31 privilege escalation
+# paths, plus false positives and false negatives for testing tools. IAM only: free.
+# Source in app/ (upstream, unchanged); terraform/ is this lab's wrapper around its free modules.
+# Run: `aws login`, then `isoloom run cloud-services`; end it with `isoloom down cloud-services`.
+version: 1
+name: iam-vulnerable
+
+cloud:
+  provider: aws
+  terraform: terraform
+  vars: { region: us-east-1 }
+  outputs:
+    account: account_id
+    deployer: deployer_arn
+    first_role: first_role_arn
+  hourly_usd: 0
+
+checks:
+  - name: the privesc users and roles exist
+    script: checks/iam.sh
+    wait: 120
+
+message: |
+  IAM Vulnerable is deployed in account {{ cloud.outputs.account }}. Every lab role trusts
+  {{ cloud.outputs.deployer }}: assume one and escalate, for example
+    aws sts assume-role --role-arn {{ cloud.outputs.first_role }} --role-session-name me
+  (An account's root user can't assume roles: when you deployed as root, use an IAM user or
+  role of the account that may call sts:AssumeRole.) The roles are named privesc<N>-<technique>-role (31 paths) and fp*/fn* (tool tests). Upstream's
+  app/aws_credentials_file_example has a profile per role. Guide:
+  https://labs.bishopfox.com/tech-blog/privilege-escalation-in-aws

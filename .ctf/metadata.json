@@ -1,0 +1,8 @@
+{
+  "title": "IAM Vulnerable",
+  "description": "An AWS IAM privilege escalation playground by Bishop Fox, deployed into your own AWS account: more than 250 IAM users, roles, groups and policies holding 31 escalation paths (policy versions, PassRole, access keys, login profiles, trust policies and more), plus false positives and negatives for testing tools.",
+  "question": "Starting from one of the privesc roles, escalate to administrator access.",
+  "category": "MISC",
+  "difficulty": 2,
+  "evidence_kind": "SECRET"
+}
