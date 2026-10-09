@@ -57,5 +57,16 @@
       }
     ]
   },
-  "message": null
+  "cloud": {
+    "provider": "aws",
+    "terraform": "terraform",
+    "outputs": [
+      "account",
+      "deployer",
+      "first_role"
+    ],
+    "inputs": [],
+    "hourly_usd": 0.0
+  },
+  "message": "IAM Vulnerable is deployed in account {{ cloud.outputs.account }}. Every lab role trusts\n{{ cloud.outputs.deployer }}: assume one and escalate, for example\n  aws sts assume-role --role-arn {{ cloud.outputs.first_role }} --role-session-name me\n(An account's root user can't assume roles: when you deployed as root, use an IAM user or\nrole of the account that may call sts:AssumeRole.) The roles are named privesc<N>-<technique>-role (31 paths) and fp*/fn* (tool tests). Upstream's\napp/aws_credentials_file_example has a profile per role. Guide:\nhttps://labs.bishopfox.com/tech-blog/privilege-escalation-in-aws\n"
 }
