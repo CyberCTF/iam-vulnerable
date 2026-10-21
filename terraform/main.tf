@@ -31,13 +31,13 @@ locals {
 }
 
 module "privesc-paths" {
-  source              = "../app/modules/free-resources/privesc-paths"
+  source              = "./modules/free-resources/privesc-paths"
   aws_assume_role_arn = local.deployer
   aws_root_user       = format("arn:aws:iam::%s:root", local.account)
 }
 
 module "tool-testing" {
-  source              = "../app/modules/free-resources/tool-testing"
+  source              = "./modules/free-resources/tool-testing"
   aws_assume_role_arn = local.deployer
   aws_root_user       = format("arn:aws:iam::%s:root", local.account)
 }
